@@ -33,13 +33,18 @@ Built-in prompts: **weekly_review**, **analyze_latest_run**, **race_plan**.
 
 ### 1. Install
 
-Requires Python 3.10+.
+Easiest (no Python needed; [uv](https://docs.astral.sh/uv/) installs it for you):
 
 ```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh    # then close & reopen Terminal
 git clone https://github.com/whosjoey/Running.git
 cd Running
-pip install -e .          # or: pipx install .   /   uv tool install .
+uv tool install --python 3.12 -e .
+running-coach status                               # should print connection info
 ```
+
+If `running-coach` isn't found, run `uv tool update-shell` and reopen Terminal.
+Already have Python 3.10+ and pip? `pip install -e .` works too.
 
 ### 2. Create API apps (free)
 
