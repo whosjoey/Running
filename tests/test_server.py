@@ -100,3 +100,16 @@ def test_tools_registered(srv):
     tools = asyncio.run(srv.mcp.list_tools())
     names = {t.name for t in tools}
     assert {"analyze_run", "readiness_check", "strava_get", "whoop_get"} <= names
+
+
+def test_install_claude_merges(tmp_path):
+    import json
+    from running_coach import cli
+    cfg = tmp_path / "claude_desktop_config.json"
+    cfg.write_text(json.dumps({"preferences": {"x": 1}, "mcpServers": {"other": {"command": "foo"}}}))
+    cli.install_claude_desktop(cfg)
+    data = json.loads(cfg.read_text())
+    assert data["preferences"] == {"x": 1}
+    assert set(data["mcpServers"]) == {"other", "running-coach"}
+    assert (tmp_path / "claude_desktop_config.json.bak").exists()
+    cli.install_claude_desktop(tmp_path / "new" / "c.json")
